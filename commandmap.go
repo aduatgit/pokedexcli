@@ -15,14 +15,14 @@ func commandMapf(cfg *config) error {
 	cfg.previousLocations = locationsResp.Previous
 
 	for _, loc := range locationsResp.Results {
-		fmt.Println(loc)
+		fmt.Println(loc.Name)
 	}
 	return nil
 }
 
 func commandMapb(cfg *config) error {
 	if cfg.previousLocations == nil {
-		return errors.New("You are on page 1!")
+		return errors.New("you are on page 1")
 	}
 	locationsResp, err := cfg.pokeapiClient.ListLocations(cfg.previousLocations)
 	if err != nil {
@@ -33,7 +33,7 @@ func commandMapb(cfg *config) error {
 	cfg.previousLocations = locationsResp.Previous
 
 	for _, loc := range locationsResp.Results {
-		fmt.Println(loc)
+		fmt.Println(loc.Name)
 	}
 
 	return nil

@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/aduatgit/pokedexcli/internal/pokeapi"
 )
 
 func startRepl(cfg *config) {
@@ -62,8 +64,8 @@ func getCommands() map[string]cliCommand {
 			description: "Exit the Pokedex",
 			callback:    commandExit,
 		},
-		"map": {
-			name:        "map",
+		"mapf": {
+			name:        "mapf",
 			description: "Displays the names of the next 20 location areas in the Pokemon world",
 			callback:    commandMapf,
 		},
