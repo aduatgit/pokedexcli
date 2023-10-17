@@ -12,7 +12,7 @@ import (
 func startRepl(cfg *config) {
 	reader := bufio.NewScanner(os.Stdin)
 	for {
-		fmt.Print("Pokedex >")
+		fmt.Print("Pokedex > ")
 		reader.Scan()
 		commandName := cleanInput(reader.Text())
 		if len(commandName) == 0 {
