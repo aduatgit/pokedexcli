@@ -14,14 +14,14 @@ func startRepl(cfg *config) {
 	for {
 		fmt.Print("Pokedex > ")
 		reader.Scan()
-		commandName := cleanInput(reader.Text())
+		commandName, argument := cleanInput(reader.Text())
 		if len(commandName) == 0 {
 			continue
 		}
 
 		cmd, exists := getCommands()[commandName]
 		if exists {
-			err := cmd.callback(cfg)
+			err := cmd.callback(cfg, argument)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -34,16 +34,16 @@ func startRepl(cfg *config) {
 	}
 }
 
-func cleanInput(s string) string {
+func cleanInput(s string) (string, string) {
 	s = strings.ToLower(s)
 	a := strings.Fields(s)
-	return a[0]
+	return a[0], a[1]
 }
 
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error
+	callback    func(*config, string) error
 }
 
 type config struct {
