@@ -14,14 +14,20 @@ func startRepl(cfg *config) {
 	for {
 		fmt.Print("Pokedex > ")
 		reader.Scan()
-		commandName, argument := cleanInput(reader.Text())
-		if len(commandName) == 0 {
+		words := cleanInput(reader.Text())
+		if len(words) == 0 {
 			continue
+		}
+
+		commandName := words[0]
+		args := []string{}
+		if len(words) > 1 {
+			args = words[1:]
 		}
 
 		cmd, exists := getCommands()[commandName]
 		if exists {
-			err := cmd.callback(cfg, argument)
+			err := cmd.callback(cfg, args...)
 			if err != nil {
 				fmt.Println(err)
 			}
@@ -34,16 +40,16 @@ func startRepl(cfg *config) {
 	}
 }
 
-func cleanInput(s string) (string, string) {
+func cleanInput(s string) []string {
 	s = strings.ToLower(s)
 	a := strings.Fields(s)
-	return a[0], a[1]
+	return a
 }
 
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config, string) error
+	callback    func(*config, ...string) error
 }
 
 type config struct {
@@ -73,6 +79,11 @@ func getCommands() map[string]cliCommand {
 			name:        "mapb",
 			description: "Displays the names of the previous 20 location areas in the Pokemon world",
 			callback:    commandMapb,
+		},
+		"explore": {
+			name:        "explore <location>",
+			description: "Displays further information on a specified location",
+			callback:    commandExplore,
 		},
 	}
 }
